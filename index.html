@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>GlobalEarn Pro | Automated SMM System</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Poppins:wght@600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <style>
+        /* CSS Root Variables & Reset */
+        :root {
+            --p-blue: #007AFF;
+            --p-dark: #00458b;
+            --accent-p: #5856D6;
+            --success: #34C759;
+            --gold: #FFCC00;
+            --danger: #FF3B30;
+            --bg-body: #050505;
+            --card-bg: #121212;
+            --border-clr: #1c1c1e;
+            --text-w: #ffffff;
+            --text-g: #8e8e93;
+            --grad-blue: linear-gradient(135deg, #007AFF, #5856D6);
+            --grad-dark: linear-gradient(180deg, #121212 0%, #050505 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-body); color: var(--text-w); height: 100vh; overflow: hidden; user-select: none; }
+
+        /* Main App Layout */
+        .app-container { max-width: 480px; margin: 0 auto; height: 100vh; display: flex; flex-direction: column; position: relative; border-left: 1px solid var(--border-clr); border-right: 1px solid var(--border-clr); }
+
+        /* Navigation Glassmorphism */
+        header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-clr); z-index: 1000; position: fixed; width: 100%; max-width: 480px; top: 0; }
+        .logo-box { display: flex; align-items: center; gap: 8px; }
+        .logo-box i { font-size: 22px; color: var(--p-blue); text-shadow: 0 0 10px rgba(0,122,255,0.5); }
+        .logo-box h1 { font-family: 'Poppins'; font-size: 19px; font-weight: 900; letter-spacing: -0.5px; }
+        
+        .header-stats { background: #1a1a1a; padding: 6px 12px; border-radius: 50px; border: 1px solid var(--border-clr); display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; }
+        .header-stats i { color: var(--gold); }
+
+        main { flex: 1; overflow-y: scroll; padding: 80px 15px 120px 15px; scroll-behavior: smooth; }
+
+        /* Swiper Slider Styling */
+        .swiper { width: 100%; height: 190px; border-radius: 25px; margin-bottom: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .swiper-slide { position: relative; background-size: cover; background-position: center; display: flex; align-items: flex-end; }
+        .slide-overlay { padding: 25px; background: linear-gradient(0deg, rgba(0,0,0,0.95) 0%, transparent 100%); width: 100%; border-radius: 0 0 25px 25px; }
+        .slide-overlay h2 { font-size: 18px; color: var(--success); margin-bottom: 4px; }
+        .slide-overlay p { font-size: 11px; color: var(--text-g); line-height: 1.4; }
+
+        /* Premium Balance Card */
+        .balance-hero { background: var(--grad-dark); border-radius: 35px; padding: 35px 25px; border: 1px solid var(--border-clr); margin-bottom: 25px; text-align: center; position: relative; box-shadow: inset 0 0 20px rgba(255,255,255,0.02); }
+        .balance-hero::after { content: ''; position: absolute; top: 15px; right: 25px; width: 40px; height: 40px; background: url('https://cdn-icons-png.flaticon.com/512/10434/10434222.png'); background-size: contain; opacity: 0.1; }
+        .balance-hero small { font-size: 11px; color: var(--text-g); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
+        .pts-display { font-family: 'Poppins'; font-size: 55px; font-weight: 900; margin: 8px 0; color: #fff; text-shadow: 0 5px 15px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; gap: 12px; }
+        .pts-display i { color: var(--gold); font-size: 35px; }
+        
+        .payout-info { margin-top: 25px; }
+        .p-bar-bg { height: 10px; background: #1a1a1c; border-radius: 10px; overflow: hidden; position: relative; border: 1px solid #222; }
+        .p-bar-fill { height: 100%; width: 0%; background: var(--grad-blue); box-shadow: 0 0 15px var(--p-blue); transition: width 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+        /* Store Items */
+        .section-title { font-size: 16px; font-weight: 800; margin: 30px 0 15px 5px; display: flex; align-items: center; gap: 10px; }
+        .section-title::before { content: ''; width: 4px; height: 16px; background: var(--p-blue); border-radius: 10px; }
+
+        .store-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .card-item { background: var(--card-bg); border-radius: 24px; padding: 22px 15px; border: 1px solid var(--border-clr); text-align: center; transition: 0.3s; position: relative; overflow: hidden; }
+        .card-item:active { transform: scale(0.95); border-color: var(--p-blue); background: #161618; }
+        .card-item i { font-size: 38px; margin-bottom: 12px; display: block; }
+        .card-item b { font-size: 13px; display: block; margin-bottom: 8px; font-weight: 700; }
+        .card-item .price-tag { background: rgba(0, 122, 255, 0.1); color: var(--p-blue); font-size: 11px; padding: 5px 12px; border-radius: 12px; font-weight: 900; }
+
+        /* Tasks Style */
+        .task-list-box { margin-bottom: 30px; }
+        .task-row { background: var(--card-bg); border-radius: 20px; padding: 18px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-left: 5px solid var(--accent-p); transition: 0.3s; }
+        .task-row:active { background: #1a1a1c; transform: translateX(-5px); }
+        .task-info h4 { font-size: 14px; margin-bottom: 4px; }
+        .task-info span { font-size: 11px; color: var(--success); font-weight: 800; }
+
+        /* Live Payout Ticker */
+        .live-payouts { background: rgba(0,0,0,0.4); border: 1px solid #111; padding: 8px; border-radius: 12px; margin-bottom: 25px; overflow: hidden; }
+        .payout-track { display: flex; gap: 40px; white-space: nowrap; animation: moveText 30s linear infinite; }
+        .payout-track span { font-size: 10px; color: var(--text-g); font-weight: 600; }
+        @keyframes moveText { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
+
+        /* Navigation Menu */
+        nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; height: 95px; background: rgba(5,5,5,0.96); backdrop-filter: blur(25px); border-top: 1px solid var(--border-clr); display: flex; justify-content: space-around; align-items: center; padding-bottom: 25px; z-index: 2000; }
+        .nav-link { color: var(--text-g); text-align: center; font-size: 10px; font-weight: 800; cursor: pointer; flex: 1; transition: 0.3s; text-decoration: none; }
+        .nav-link.active { color: var(--p-blue); }
+        .nav-link i { font-size: 24px; margin-bottom: 6px; display: block; }
+
+        /* Modals & Popups */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.97); z-index: 5000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 25px; }
+        .loader-ring { width: 90px; height: 90px; border: 5px solid #111; border-top-color: var(--p-blue); border-radius: 50%; animation: spin 1s linear infinite; box-shadow: 0 0 20px rgba(0,122,255,0.2); }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        #toast { position: fixed; top: 100px; left: 50%; transform: translateX(-50%) translateY(-150px); background: var(--success); color: #000; padding: 12px 30px; border-radius: 50px; font-weight: 900; z-index: 6000; transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+        #toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* Admin UI */
+        .admin-box { background: var(--card-bg); border-radius: 30px; width: 100%; padding: 25px; border: 1px solid var(--gold); }
+        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .admin-stat { background: #000; padding: 15px; border-radius: 18px; text-align: center; border: 1px solid #222; }
+        .admin-stat b { font-size: 20px; color: var(--success); display: block; margin-top: 5px; }
+
+        /* Hidden Class */
+        .page { display: none; animation: fadeIn 0.4s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div id="toast">تمت العملية بنجاح! ✅</div>
+
+<div class="app-container">
+    <header>
+        <div class="logo-box">
+            <i class="fa-solid fa-gem"></i>
+            <h1>GLOBAL EARN</h1>
+        </div>
+        <div class="header-stats" onclick="App.Core.openAdmin()">
+            <i class="fa-solid fa-coins"></i>
+            <span id="top-pts-val">0</span>
+        </div>
+    </header>
+
+    <main id="app-main">
+        <section id="page-home" class="page active">
+            <div class="live-payouts">
+                <div class="payout-track" id="ticker-box">
+                    <span>• تم تنفيذ طلب 100 متابع لـ (مجهول) آلياً</span>
+                    <span>• (أمين) قام باستبدال 5000 نقطة بنجاح</span>
+                    <span>• تم شحن 100 جوهرة لـ (لاعب 1) الآن</span>
+                </div>
+            </div>
+
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide" style="background-image: url('https://images.unsplash.com/photo-1614028674026-a65e31bfd27c?q=80&w=600')">
+                        <div class="slide-overlay">
+                            <h2>نظام الربح الآلي 2026</h2>
+                            <p>اجمع النقاط من مشاهدة الإعلانات واترك التنفيذ لبرنامجنا الذكي.</p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide" style="background-image: url('https://images.unsplash.com/photo-1621508654686-809f23efdaba?q=80&w=600')">
+                        <div class="slide-overlay">
+                            <h2>خدمات SMM فورية</h2>
+                            <p>زيادة متابعين تيك توك، انستقرام، ويوتيوب في ثوانٍ معدودة.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="balance-hero">
+                <small>رصيدك من النقاط</small>
+                <div class="pts-display">
+                    <i class="fa-solid fa-database"></i>
+                    <span id="main-pts-val">0</span>
+                </div>
+                
+                <div class="payout-info">
+                    <div class="p-bar-bg"><div class="p-bar-fill" id="p-bar"></div></div>
+                    <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:10px; color:var(--text-g); font-weight:800;">
+                        <span>الهدف: 10,000 نقطة</span>
+                        <span id="p-text">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-title">مهام جمع النقاط السهلة</div>
+            <div class="task-list-box" id="task-container">
+                </div>
+        </section>
+
+        <section id="page-store" class="page">
+            <div class="section-title">متجر الخدمات التلقائي (API)</div>
+            <div class="store-grid" id="store-container">
+                </div>
+            <p style="text-align: center; color: var(--text-g); font-size: 11px; margin-top: 20px;">جميع الخدمات يتم تنفيذها آلياً عبر السيرفر العالمي.</p>
+        </section>
+
+        <section id="page-admin" class="page">
+            <div class="admin-box">
+                <h2 style="text-align: center; color: var(--gold); font-size: 18px;">لوحة المالك (SECRET)</h2>
+                <div class="admin-grid">
+                    <div class="admin-stat">
+                        <small>أرباحك الحقيقية</small>
+                        <b id="adm-money">$0.00</b>
+                    </div>
+                    <div class="admin-stat">
+                        <small>إجمالي الطلبات</small>
+                        <b id="adm-count">0</b>
+                    </div>
+                </div>
+                
+                <h4 style="margin: 20px 0 10px; font-size: 13px;">سجل الطلبات الآلية (API Logs):</h4>
+                <div id="adm-logs" style="background:#000; padding:15px; border-radius:15px; font-size:10px; color:var(--text-g); max-height:200px; overflow-y:auto;">
+                    لا توجد عمليات مسجلة حالياً...
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <nav>
+        <div class="nav-link active" onclick="App.UI.tab('home', this)">
+            <i class="fa-solid fa-house-chimney"></i>
+            الرئيسية
+        </div>
+        <div class="nav-link" onclick="App.UI.tab('store', this)">
+            <i class="fa-solid fa-shop"></i>
+            المتجر
+        </div>
+        <div class="nav-link" onclick="App.UI.tab('admin', this)">
+            <i class="fa-solid fa-fingerprint"></i>
+            الإدارة
+        </div>
+    </nav>
+
+    <div id="modal-proc" class="modal">
+        <div class="loader-ring"></div>
+        <h3 id="modal-title" style="margin-top:25px; font-size:18px;">جاري المعالجة...</h3>
+        <div id="modal-timer" style="font-family:'Poppins'; font-size:40px; font-weight:900; color:var(--p-blue); margin-top:10px;">0</div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    /**
+     * GLOBALEARN PRO v4.0 - CORE ENGINE
+     * Designed for 2026 Fully Automated SMM System
+     */
+    const App = {
+        // Application State
+        state: {
+            points: 0,
+            ownerProfit: 0.00,
+            orderCount: 0,
+            isWorking: false,
+            logs: [],
+            // إعدادات الـ API (يتم ربطها بسيرفر SMM خارجي)
+            config: {
+                api_key: 'YOUR_SECRET_API_KEY',
+                api_url: 'https://jap-smm.com/api/v2',
+                target_pts: 10000,
+                profit_per_ad: 0.002 // ربحك أنت عن كل إعلان يشاهده المستخدم
+            }
+        },
+
+        // 1. Initializer
+        init: function() {
+            this.UI.setupSwiper();
+            this.Logic.renderTasks();
+            this.Logic.renderStore();
+            this.Logic.tickerEngine();
+            this.UI.update();
+            console.log("GlobalEarn Pro Engine: Active");
+        },
+
+        // 2. Logic Engine
+        Logic: {
+            renderTasks: function() {
+                const tasks = [
+                    { id: 1, name: "مشاهدة إعلان مكافأة VIP", pts: 250, sec: 15, icon: "fa-bolt" },
+                    { id: 2, name: "إعلان فيديو سريع", pts: 120, sec: 8, icon: "fa-play" },
+                    { id: 3, name: "زيارة عرض ممول", pts: 500, sec: 25, icon: "fa-gift" }
+                ];
+                const box = document.getElementById('task-container');
+                tasks.forEach(t => {
+                    box.innerHTML += `
+                        <div class="task-row" onclick="App.Logic.runTask(${t.sec}, ${t.pts})">
+                            <div class="task-info">
+                                <h4>${t.name}</h4>
+                                <span>+${t.pts} نقطة مكافأة</span>
+                            </div>
+                            <i class="fa-solid ${t.icon}" style="font-size:24px; color:var(--p-blue)"></i>
+                        </div>
+                    `;
+                });
+            },
+
+            renderStore: function() {
+                const services = [
+                    { id: 10, name: "100 متابع انستا", cost: 5000, icon: "fa-instagram", color: "#E1306C" },
+                    { id: 20, name: "500 لايك تيك توك", cost: 9000, icon: "fa-tiktok", color: "#fff" },
+                    { id: 30, name: "100 جوهرة Free Fire", cost: 15000, icon: "fa-fire", color: "#FF7800" },
+                    { id: 40, name: "بطاقة Google Play $5", cost: 45000, icon: "fa-google-play", color: "#3bccff" }
+                ];
+                const box = document.getElementById('store-container');
+                services.forEach(s => {
+                    box.innerHTML += `
+                        <div class="card-item" onclick="App.Logic.apiOrder(${s.id}, ${s.cost}, '${s.name}')">
+                            <i class="fa-brands ${s.icon}" style="color:${s.color}"></i>
+                            <b>${s.name}</b>
+                            <span class="price-tag">${s.cost.toLocaleString()} نقطة</span>
+                        </div>
+                    `;
+                });
+            },
+
+            runTask: function(sec, pts) {
+                if(App.state.isWorking) return;
+                const m = document.getElementById('modal-proc');
+                const t = document.getElementById('modal-timer');
+                const l = document.getElementById('modal-title');
+                
+                App.state.isWorking = true;
+                m.style.display = 'flex';
+                l.innerText = "جاري تشغيل الإعلان...";
+                
+                let count = sec;
+                t.innerText = count;
+
+                const timer = setInterval(() => {
+                    count--;
+                    t.innerText = count;
+                    if(count <= 0) {
+                        clearInterval(timer);
+                        m.style.display = 'none';
+                        App.state.points += pts;
+                        App.state.ownerProfit += App.state.config.profit_per_ad;
+                        App.state.isWorking = false;
+                        App.UI.update();
+                        App.UI.toast(`مبروك! ربحت ${pts} نقطة 🎁`);
+                    }
+                }, 1000);
+            },
+
+            apiOrder: function(sid, cost, name) {
+                if(App.state.points < cost) return App.UI.toast("نقاطك غير كافية!");
+
+                const target = prompt(`أدخل رابط حسابك أو الـ ID لتنفيذ ${name}:`);
+                if(!target || target.length < 4) return;
+
+                const m = document.getElementById('modal-proc');
+                const l = document.getElementById('modal-title');
+                const t = document.getElementById('modal-timer');
+
+                m.style.display = 'flex';
+                l.innerText = "جاري الاتصال بالسيرفر التلقائي...";
+                t.innerText = "API";
+
+                // محاكاة الاتصال بـ SMM Panel API
+                setTimeout(() => {
+                    App.state.points -= cost;
+                    App.state.orderCount++;
+                    App.state.logs.unshift(`[${new Date().toLocaleTimeString()}] تم تنفيذ ${name} لـ ${target} بنجاح.`);
+                    
+                    m.style.display = 'none';
+                    App.UI.update();
+                    alert(`✅ تم إرسال الطلب للسيرفر التلقائي!\nسيتم البدء في التنفيذ خلال دقائق.`);
+                }, 3000);
+            },
+
+            tickerEngine: function() {
+                const names = ["عمر", "هبة", "إياد", "نور", "خلود"];
+                const box = document.getElementById('ticker-box');
+                setInterval(() => {
+                    const n = names[Math.floor(Math.random()*names.length)];
+                    const span = document.createElement('span');
+                    span.innerText = `• تم شحن خدمة لـ (${n}) عبر النظام الآلي الآن`;
+                    box.prepend(span);
+                }, 12000);
+            }
+        },
+
+        // 3. User Interface Engine
+        UI: {
+            setupSwiper: function() {
+                new Swiper(".mySwiper", { autoplay: { delay: 4000 }, loop: true, effect: "fade" });
+            },
+
+            update: function() {
+                document.getElementById('top-pts-val').innerText = App.state.points.toLocaleString();
+                document.getElementById('main-pts-val').innerText = App.state.points.toLocaleString();
+                
+                const percent = Math.min((App.state.points / App.state.config.target_pts) * 100, 100);
+                document.getElementById('p-bar').style.width = percent + "%";
+                document.getElementById('p-text').innerText = Math.floor(percent) + "%";
+
+                // Admin Updates
+                document.getElementById('adm-money').innerText = "$" + App.state.ownerProfit.toFixed(3);
+                document.getElementById('adm-count').innerText = App.state.orderCount;
+                
+                const logsBox = document.getElementById('adm-logs');
+                if(App.state.logs.length > 0) {
+                    logsBox.innerHTML = App.state.logs.map(log => `<div>${log}</div>`).join('');
+                }
+            },
+
+            tab: function(id, el) {
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+                document.getElementById('page-' + id).classList.add('active');
+                el.classList.add('active');
+            },
+
+            toast: function(msg) {
+                const t = document.getElementById('toast');
+                t.innerText = msg;
+                t.classList.add('show');
+                setTimeout(() => t.classList.remove('show'), 3000);
+            },
+
+            openAdmin: function() {
+                const pass = prompt("كلمة السر الخاصة بالمالك:");
+                if(pass === "1234") {
+                    this.tab('admin', document.querySelectorAll('.nav-link')[2]);
+                } else {
+                    alert("غير مصرح لك!");
+                }
+            }
+        },
+
+        // 4. Core Wrapper
+        Core: {
+            openAdmin: function() { App.UI.openAdmin(); }
+        }
+    };
+
+    // Run System
+    window.onload = () => App.init();
+</script>
+
+</body>
+</html>
